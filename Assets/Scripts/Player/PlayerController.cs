@@ -13,6 +13,7 @@ public class PlayerController : MonoBehaviour
     Rigidbody _rb;
     PlayerInputActions _inputActions;
     [SerializeField] float _movementSpeed;
+
     IceShot _iceShotAttack;
     bool _canAttack;
 

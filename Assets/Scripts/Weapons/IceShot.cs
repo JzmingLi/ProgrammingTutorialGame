@@ -8,21 +8,22 @@ public class IceShot : AttackBase
     {
         _rb = projectileType.GetComponent<Rigidbody>();
         cooldown = 1.5f;
-        lifespan = 5.0f;
-        projectileVelocity = 0.01f;
+        lifespan = 3.0f;
+        projectileVelocity = 5.0f;
+        cam = Camera.main;
     }
 
     public override void PlayerAttack(Vector3 startingPos)
     {
+        StartCoroutine(BurstDelay(startingPos));
+    }
+
+    IEnumerator BurstDelay(Vector3 startingPos)
+    {
         for (int i = 0; i < 3; i++)
         {
             base.PlayerAttack(startingPos);
-            StartCoroutine(BurstDelay());
+            yield return new WaitForSeconds(0.2f);
         }
-    }
-
-    IEnumerator BurstDelay()
-    {
-        yield return new WaitForSeconds(0.2f);
     }
 }

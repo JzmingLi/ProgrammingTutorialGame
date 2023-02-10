@@ -9,13 +9,15 @@ public abstract class AttackBase : MonoBehaviour
     protected float cooldown;
     protected float lifespan;
     protected float projectileVelocity;
-
+    protected Camera cam;
     public virtual void PlayerAttack(Vector3 startingPos)
     {
-        Vector3 targetedPos = Input.mousePosition;
-        targetedPos.y = 0.0f;
-        GameObject projectile = Instantiate(projectileType, startingPos, Quaternion.Euler(startingPos - targetedPos));
-        projectile.GetComponent<Rigidbody>().velocity = (startingPos - targetedPos) * projectileVelocity;
+        //Doesn't work as intended
+        Vector3 targetedPos = cam.ScreenToWorldPoint(Input.mousePosition);
+        Debug.Log(targetedPos);
+        Debug.Log(startingPos);
+        GameObject projectile = Instantiate(projectileType, startingPos, Quaternion.Euler((targetedPos - startingPos).normalized));
+        projectile.GetComponent<Rigidbody>().velocity = (targetedPos - startingPos).normalized * projectileVelocity;
         Destroy(projectile, lifespan);
     }
 
