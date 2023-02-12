@@ -10,15 +10,24 @@ public abstract class AttackBase : MonoBehaviour
     protected float lifespan;
     protected float projectileVelocity;
     protected Camera cam;
-    public virtual void PlayerAttack(Vector3 startingPos)
+    public virtual void PlayerAttack(Transform startingPos)
     {
-        //Doesn't work as intended
-        Vector3 targetedPos = cam.ScreenToWorldPoint(Input.mousePosition);
-        Debug.Log(targetedPos);
-        Debug.Log(startingPos);
-        GameObject projectile = Instantiate(projectileType, startingPos, Quaternion.Euler((targetedPos - startingPos).normalized));
-        projectile.GetComponent<Rigidbody>().velocity = (targetedPos - startingPos).normalized * projectileVelocity;
-        Destroy(projectile, lifespan);
+        Vector3 targetPos;
+        Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+        RaycastHit hit;
+        if (Physics.Raycast(ray, out hit))
+        {
+            targetPos = hit.point;
+            targetPos.y = startingPos.position.y;
+
+            GameObject projectile = Instantiate(projectileType, startingPos.position, Quaternion.LookRotation(targetPos-startingPos.position));
+            projectile.GetComponent<Rigidbody>().velocity = (targetPos - startingPos.position) * projectileVelocity;
+            Destroy(projectile, lifespan);
+        }
+        else
+        {
+            Debug.Log("Mouse Raycast Failed");
+        }
     }
 
     public float GetCooldown()

@@ -9,16 +9,16 @@ public class IceShot : AttackBase
         _rb = projectileType.GetComponent<Rigidbody>();
         cooldown = 1.5f;
         lifespan = 3.0f;
-        projectileVelocity = 5.0f;
+        projectileVelocity = 2.0f;
         cam = Camera.main;
     }
 
-    public override void PlayerAttack(Vector3 startingPos)
+    public override void PlayerAttack(Transform startingPos)
     {
         StartCoroutine(BurstDelay(startingPos));
     }
 
-    IEnumerator BurstDelay(Vector3 startingPos)
+    IEnumerator BurstDelay(Transform startingPos)
     {
         for (int i = 0; i < 3; i++)
         {

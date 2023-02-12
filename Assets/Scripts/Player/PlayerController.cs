@@ -38,7 +38,7 @@ public class PlayerController : MonoBehaviour
     IEnumerator AttackCooldown()
     {
         _canAttack = false;
-        _iceShotAttack.PlayerAttack(_trans.position);
+        _iceShotAttack.PlayerAttack(_trans);
         yield return new WaitForSeconds(_iceShotAttack.GetCooldown());
         _canAttack = true;
     }
