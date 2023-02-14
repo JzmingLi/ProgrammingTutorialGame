@@ -10,7 +10,6 @@ public class IceShot : AttackBase
         cooldown = 1.5f;
         lifespan = 3.0f;
         projectileVelocity = 2.0f;
-        cam = Camera.main;
     }
 
     public override void PlayerAttack(Transform startingPos)

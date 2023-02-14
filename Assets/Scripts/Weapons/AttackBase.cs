@@ -9,7 +9,6 @@ public abstract class AttackBase : MonoBehaviour
     protected float cooldown;
     protected float lifespan;
     protected float projectileVelocity;
-    protected Camera cam;
     public virtual void PlayerAttack(Transform startingPos)
     {
         Vector3 targetPos;
