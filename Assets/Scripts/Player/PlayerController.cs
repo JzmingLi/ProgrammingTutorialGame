@@ -5,8 +5,12 @@ using UnityEngine.InputSystem;
 using UnityEngine.InputSystem.Utilities;
 
 [RequireComponent(typeof(Rigidbody))]
-public class PlayerController : MonoBehaviour
+public sealed class PlayerController : MonoBehaviour
 {
+    //Singleton
+    static PlayerController instance = null;
+
+    //Movement
     Transform _trans;
     Vector2 _movementInput;
     Vector3 _movement;
@@ -14,8 +18,27 @@ public class PlayerController : MonoBehaviour
     PlayerInputActions _inputActions;
     [SerializeField] float _movementSpeed;
 
+    //Stats
+    public float maxHealth;
+    public float health;
+
+    //Attacks
     IceShot _iceShotAttack;
     bool _canAttack;
+
+    //Singleton Blocks
+    private PlayerController() { }
+    public static PlayerController Instance
+    {
+        get
+        {
+            if (instance == null)
+            {
+                instance = new PlayerController();
+            }
+            return instance;
+        }
+    }
 
     private void Awake()
     {
@@ -25,6 +48,7 @@ public class PlayerController : MonoBehaviour
         _iceShotAttack = gameObject.GetComponent<IceShot>();
         _canAttack = true;
         _trans = gameObject.transform;
+        instance = this;
     }
 
     private void Update()
