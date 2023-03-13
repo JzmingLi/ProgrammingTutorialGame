@@ -20,7 +20,7 @@ public abstract class AttackBase : MonoBehaviour
             targetPos.y = startingPos.position.y;
 
             GameObject projectile = Instantiate(projectileType, startingPos.position, Quaternion.LookRotation(targetPos-startingPos.position));
-            projectile.GetComponent<Rigidbody>().velocity = (targetPos - startingPos.position) * projectileVelocity;
+            projectile.GetComponent<Rigidbody>().velocity = (targetPos - startingPos.position).normalized * projectileVelocity;
             Destroy(projectile, lifespan);
         }
         else

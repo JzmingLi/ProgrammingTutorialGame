@@ -9,7 +9,7 @@ public class IceShot : AttackBase
         _rb = projectileType.GetComponent<Rigidbody>();
         cooldown = 1.5f;
         lifespan = 3.0f;
-        projectileVelocity = 2.0f;
+        projectileVelocity = 10f;
     }
 
     public override void PlayerAttack(Transform startingPos)
