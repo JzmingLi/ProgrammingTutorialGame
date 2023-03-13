@@ -21,7 +21,6 @@ public sealed class PlayerController : MonoBehaviour
     //Stats
     public float maxHealth;
     public float health;
-    bool damageable = true;
 
     //Attacks
     IceShot _iceShotAttack;
@@ -73,26 +72,5 @@ public sealed class PlayerController : MonoBehaviour
         _movementInput = _inputActions.Player.Move.ReadValue<Vector2>();
         _movement = new Vector3(_movementInput.x, 0.0f, _movementInput.y);
         _rb.velocity = _movement * _movementSpeed;
-    }
-
-    public void TakeDamage(float amount)
-    {
-        if (damageable)
-        {
-            health -= amount;
-
-            if (health <= 0)
-            {
-                Debug.Log("I'm dead!");
-            }
-            StartCoroutine(DamageCooldown());
-        }
-    }
-
-    IEnumerator DamageCooldown()
-    {
-        damageable = false;
-        yield return new WaitForSeconds(1);
-        damageable = true;
     }
 }
