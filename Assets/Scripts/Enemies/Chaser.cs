@@ -34,7 +34,15 @@ public class Chaser : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        if (other.gameObject.CompareTag("PlayerBullet")) Destroy(gameObject);
+        if (other.gameObject.CompareTag("PlayerBullet"))
+        {            
+            GameObject.Find("GameManager").GetComponent<Score>().CurrentScore++;
+            if (GameObject.Find("GameManager").GetComponent<Score>().CurrentScore > GameObject.Find("GameManager").GetComponent<Score>().highestScore)
+            {
+                GameObject.Find("GameManager").GetComponent<Score>().highestScore = GameObject.Find("GameManager").GetComponent<Score>().CurrentScore;
+            }
+            Destroy(gameObject);
+        }
     }
 }
 

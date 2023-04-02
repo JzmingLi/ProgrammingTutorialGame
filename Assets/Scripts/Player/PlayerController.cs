@@ -74,7 +74,6 @@ public sealed class PlayerController : MonoBehaviour
         _movement = new Vector3(_movementInput.x, 0.0f, _movementInput.y);
         _rb.velocity = _movement * _movementSpeed;
     }
-
     public void TakeDamage(float amount)
     {
         if (damageable)
@@ -84,6 +83,8 @@ public sealed class PlayerController : MonoBehaviour
             if (health <= 0)
             {
                 Debug.Log("I'm dead!");
+                GameObject.Find("GameManager").GetComponent<Score>().SaveHighScore();
+                GameObject.Find("GameManager").GetComponent<SceneLoader>().Restart();
             }
             StartCoroutine(DamageCooldown());
         }
