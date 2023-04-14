@@ -21,10 +21,10 @@ public sealed class PlayerController : MonoBehaviour
     //Stats
     public float maxHealth;
     public float health;
+    bool damageable = true;
 
     //Attacks
-    IceShot _iceShotAttack;
-    bool _canAttack;
+    AttackController _attackController;
 
     //Singleton Blocks
     private PlayerController() { }
@@ -43,28 +43,17 @@ public sealed class PlayerController : MonoBehaviour
     private void Awake()
     {
         _inputActions = new PlayerInputActions();
-        _rb = gameObject.GetComponent<Rigidbody>();
+        _rb = GetComponent<Rigidbody>();
+        _attackController = GetComponent<AttackController>();
         _inputActions.Player.Enable();
-        _iceShotAttack = gameObject.GetComponent<IceShot>();
-        _canAttack = true;
         _trans = gameObject.transform;
         instance = this;
     }
 
     private void Update()
     {
-        if(Input.GetButton("Fire") && _canAttack)
-        {
-            StartCoroutine(AttackCooldown());
-        }
-    }
-
-    IEnumerator AttackCooldown()
-    {
-        _canAttack = false;
-        _iceShotAttack.PlayerAttack(_trans);
-        yield return new WaitForSeconds(_iceShotAttack.GetCooldown());
-        _canAttack = true;
+        if (_inputActions.FindAction("Fire").WasPerformedThisFrame()) _attackController.AttackAction("Ice Burst");
+        if (_inputActions.FindAction("SecondaryFire").WasPerformedThisFrame()) _attackController.AttackAction("Ice Shot");
     }
 
     private void FixedUpdate()
@@ -73,9 +62,6 @@ public sealed class PlayerController : MonoBehaviour
         _movement = new Vector3(_movementInput.x, 0.0f, _movementInput.y);
         _rb.velocity = _movement * _movementSpeed;
     }
-<<<<<<< Updated upstream
-=======
-
     public void TakeDamage(float amount)
     {
         if (damageable)
@@ -98,5 +84,4 @@ public sealed class PlayerController : MonoBehaviour
         yield return new WaitForSeconds(1);
         damageable = true;
     }
->>>>>>> Stashed changes
 }

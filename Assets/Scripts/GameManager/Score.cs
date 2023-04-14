@@ -15,6 +15,7 @@ public class Score : MonoBehaviour
     public int highestScore;
     private string savePath;
 
+    readonly string encryptionKey = "noOneWillEverGuessThisTrustMe";
     void Start()
     {
         savePath = Application.persistentDataPath + "/HighestScore.json";
@@ -29,7 +30,9 @@ public class Score : MonoBehaviour
         {
             using (StreamWriter writer = new StreamWriter(stream))
             {
-                writer.Write(JsonUtility.ToJson(data,true));
+                string dataString = JsonUtility.ToJson(data, true);
+                dataString = EncryptAndDecrypt(dataString);
+                writer.Write(dataString);
             }
         }
         Debug.Log($"Saved to {savePath}");
@@ -44,7 +47,9 @@ public class Score : MonoBehaviour
             {
                 using (StreamReader reader = new StreamReader(stream))
                 {
-                    data = JsonUtility.FromJson <SaveData>(reader.ReadToEnd());
+                    string dataString = reader.ReadToEnd();
+                    dataString = EncryptAndDecrypt(dataString);
+                    data = JsonUtility.FromJson<SaveData>(dataString);
                 }
                 highestScore = data.highscore;
                 Debug.Log($"Loaded from {savePath}");
@@ -55,5 +60,16 @@ public class Score : MonoBehaviour
             Directory.CreateDirectory(Path.GetDirectoryName(savePath));
         }
     }
-
+    string EncryptAndDecrypt(string data)
+    {
+        string newData = "";
+        char[] dataCharArray = data.ToCharArray();
+        char[] keyCharArray = encryptionKey.ToCharArray();
+        for (int i = 0; i < data.Length; i++)
+        {
+            dataCharArray[i] ^= keyCharArray[i % keyCharArray.Length];
+            newData += dataCharArray[i];
+        }
+        return newData;
+    }
 }
